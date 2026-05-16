@@ -8,7 +8,14 @@ body {
 
     
     letter-spacing: 0.2px;
-    
+     /* запрещаем скролл всей страницы */
+    overflow: hidden;
+
+    /* чтобы padding входил в размеры */
+    box-sizing: border-box;
+
+    /* фиксируем высоту страницы */
+    height: 100vh;
     
 }
 
@@ -18,6 +25,28 @@ body {
     margin: auto;
     padding: 10px;
     font-size: 16px;
+
+      /*
+    Высота чата 
+    */
+    height: 80vh;
+
+    /*
+    Если сообщений больше, чем помещается,
+    появляется вертикальный скролл.
+    */
+    overflow-y: auto;
+
+    /*
+    Чтобы padding не ломал высоту.
+    */
+    box-sizing: border-box;
+
+    /*
+    Плавный скролл,
+    когда JS прокручивает вниз.
+    */
+    scroll-behavior: smooth;
 }
 
 
@@ -77,4 +106,54 @@ body::before {
     .message {
         padding: 10px 8px;
     }
+}
+
+#chat::-webkit-scrollbar {
+    width: 8px;
+}
+
+/* фон полосы */
+#chat::-webkit-scrollbar-track {
+    background: #111517;
+    border-left: 1px solid #1e2529;
+}
+
+/* сам бегунок */
+#chat::-webkit-scrollbar-thumb {
+    background: #2b3a42;
+
+    /*
+    Чтобы выглядело как "капсула"
+    */
+    border-radius: 6px;
+
+    /*
+    Небольшая внутренняя рамка,
+    чтобы был "зазор"
+    */
+    border: 1px solid #111517;
+}
+
+/* hover на бегунке */
+#chat::-webkit-scrollbar-thumb:hover {
+    background: #3df5c0;
+
+    /*
+    Неоновое свечение
+    */
+    box-shadow:
+        0 0 6px rgba(61, 245, 192, 0.35);
+}
+/*
+Для Firefox
+*/
+#chat {
+    scrollbar-width: thin;
+
+    /*
+    thumb | track
+    */
+    scrollbar-color:
+        #2b3a42
+        #111517;
 }

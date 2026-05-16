@@ -33,6 +33,20 @@ let serverOffset = 0;
 
 /*
 ====================================================
+АВТОСКРОЛЛ
+====================================================
+*/
+
+/*
+Флаг:
+true  = пользователь сейчас внизу чата
+false = пользователь прокрутил вверх
+*/
+let isUserAtBottom = true;
+
+
+/*
+====================================================
 ПОЛУЧЕНИЕ СЕРВЕРНОГО ВРЕМЕНИ
 ====================================================
 */
@@ -77,8 +91,77 @@ function appendMessage(msg) {
     `;
 
     container.appendChild(div);
+     /*
+    Если пользователь сейчас
+    внизу чата -
+    автоматически прокручиваем.
+    */
+    if (isUserAtBottom) {
+        scrollChatToBottom();
+    }
 }
+/*
+====================================================
+ПРОВЕРКА:
+ПОЛЬЗОВАТЕЛЬ ВНИЗУ ИЛИ НЕТ
+====================================================
+*/
 
+function updateUserScrollState() {
+
+    /*
+    Берем чат-контейнер
+    */
+    const chat =
+        document.getElementById("chat");
+
+    /*
+    scrollTop
+    = насколько пользователь уже прокрутил вниз
+
+    clientHeight
+    = видимая высота окна
+
+    scrollHeight
+    = полная высота всех сообщений
+    */
+
+    /*
+    Небольшой запас,
+    чтобы не было дерганий.
+    */
+    const threshold = 50;
+
+    /*
+    Если нижний край окна
+    почти касается конца контента,
+    считаем что пользователь "внизу".
+    */
+    isUserAtBottom =
+        chat.scrollTop +
+        chat.clientHeight >=
+        chat.scrollHeight -
+        threshold;
+}
+/*
+====================================================
+ПРОКРУТИТЬ ЧАТ ВНИЗ
+====================================================
+*/
+
+function scrollChatToBottom() {
+
+    const chat =
+        document.getElementById("chat");
+
+    /*
+    Прыгаем в самый низ.
+    Из-за CSS scroll-behavior
+    это будет плавно.
+    */
+    chat.scrollTop =
+        chat.scrollHeight;
+}
 /*
 ====================================================
 СУТОЧНЫЙ ЦИКЛ
@@ -190,6 +273,17 @@ async function init() {
     */
     setInterval(checkMessages, 10 * 1000);
     //setInterval(checkMessages, 60 * 1000); // если реже
+        /*
+    Следим,
+    прокрутил ли пользователь чат.
+    */
+    const chat =
+        document.getElementById("chat");
+
+    chat.addEventListener(
+        "scroll",
+        updateUserScrollState
+    );
 }
 
 /*
