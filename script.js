@@ -102,6 +102,42 @@ function appendMessage(msg) {
 }
 /*
 ====================================================
+СИСТЕМНОЕ СООБЩЕНИЕ В ЧАТЕ
+(без канала и ника)
+====================================================
+*/
+
+function appendSystemMessage(text) {
+    const container =
+        document.getElementById("messages");
+
+    const div =
+        document.createElement("div");
+
+    /*
+    Обычное сообщение +
+    дополнительный класс
+    */
+    div.className =
+        "message system-message";
+
+    div.innerHTML = `
+        <span class="system-text">
+            ${text}
+        </span>
+    `;
+
+    container.appendChild(div);
+
+    /*
+    Автоскролл как у обычных сообщений
+    */
+    if (isUserAtBottom) {
+        scrollChatToBottom();
+    }
+}
+/*
+====================================================
 ПРОВЕРКА:
 ПОЛЬЗОВАТЕЛЬ ВНИЗУ ИЛИ НЕТ
 ====================================================
@@ -249,7 +285,9 @@ async function init() {
     }
 
     serverOffset = serverTime - new Date();
-
+    appendSystemMessage(
+    "> connected to chat ISO"
+    );
     /*
     ВАЖНО:
     просто фиксируем текущие индексы,
