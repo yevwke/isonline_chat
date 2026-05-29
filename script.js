@@ -3,12 +3,12 @@ console.log("SCRIPT STARTED");
 
 /*
 ====================================================
-НАСТРОЙКИ ВРЕМЕНИ (ДЛЯ ТЕСТА)
+НАСТРОЙКИ ВРЕМЕНИ 
 ====================================================
 */
 
-const COMMON_INTERVAL = 20 * 1000; // 20 секунд (тест)
-const RARE_INTERVAL = 43 * 1000;   // 45 секунд (тест)
+const COMMON_INTERVAL = 4 * 60 * 1000; // каждые 4 минуты
+const RARE_INTERVAL = 16 * 60 * 1000;   // каждые 16 минут
 
 /*
 ====================================================
@@ -200,26 +200,32 @@ function scrollChatToBottom() {
 }
 /*
 ====================================================
-СУТОЧНЫЙ ЦИКЛ
+ГЛОБАЛЬНЫЙ ЦИКЛ (без сброса по суткам)
 ====================================================
 */
-function getDailyIndex(now, interval, length) {
-    if (!length) return 0; // защита от пустого массива
 
-    const midnight = Date.UTC(
-        now.getUTCFullYear(),
-        now.getUTCMonth(),
-        now.getUTCDate(),
-        0, 0, 0
-    );
+function getGlobalIndex(now, interval, length) {
 
-    const elapsed = now - midnight;
+    /*
+    защита от пустых массивов
+    */
+    if (!length) return 0;
 
-    const slot = Math.floor(elapsed / interval);
+    /*
+    берем абсолютное время (Unix time)
+    */
+    const timestamp = now.getTime();
 
+    /*
+    считаем сколько интервалов прошло
+    */
+    const slot = Math.floor(timestamp / interval);
+
+    /*
+    зацикливаем сообщения
+    */
     return slot % length;
 }
-
 /*
 ====================================================
 ПРОВЕРКА СООБЩЕНИЙ
@@ -231,13 +237,13 @@ function checkMessages() {
 
     if (!commonMessages.length || !rareMessages.length) return;
 
-    const commonIndex = getDailyIndex(
+    const commonIndex = getGlobalIndex(
         now,
         COMMON_INTERVAL,
         commonMessages.length
     );
 
-    const rareIndex = getDailyIndex(
+    const rareIndex = getGlobalIndex(
         now,
         RARE_INTERVAL,
         rareMessages.length
@@ -294,13 +300,13 @@ async function init() {
     но НЕ выводим их (иначе будет дублирование)
     */
 
-    lastCommonIndex = getDailyIndex(
+    lastCommonIndex = getGlobalIndex(
         serverTime,
         COMMON_INTERVAL,
         commonMessages.length
     );
 
-    lastRareIndex = getDailyIndex(
+    lastRareIndex = getGlobalIndex(
         serverTime,
         RARE_INTERVAL,
         rareMessages.length
