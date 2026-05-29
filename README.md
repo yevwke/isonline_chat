@@ -1,7 +1,7 @@
 
 ### ISOnline Chat
 
-Это [псевдочат](yevwke.github.io/isonline_chat/) для настольной ролевой игры [IsOnline](https://rpgbook.ru/isonline). 
+Это [псевдочат](https://yevwke.github.io/isonline_chat/) для настольной ролевой игры [IsOnline](https://rpgbook.ru/isonline). 
 
 Он имитирует внутриигровой чат MMO с отсылками к онлайн играм и НРИ сообществу.
 
