@@ -7,7 +7,7 @@ console.log("SCRIPT STARTED");
 ====================================================
 */
 
-const COMMON_INTERVAL = 60 * 1000; // каждые 4 минуты
+const COMMON_INTERVAL = 60 * 1000; // каждую минуту
 const RARE_INTERVAL = 16 * 60 * 1000;   // каждые 16 минут
 
 /*
